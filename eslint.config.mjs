@@ -1,6 +1,9 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import {dirname} from "path";
+import {fileURLToPath} from "url";
+import {FlatCompat} from "@eslint/eslintrc";
+
+import getConfig, {tsFiles} from "eslint-config-regiojet-typescript-react";
+const baseDir = import.meta.dirname;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,7 +13,27 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...getConfig(baseDir),
+  {
+    files: tsFiles,
+    name: "my-rules",
+    rules: {
+      "import/prefer-default-export": 'off',
+      '@typescript-eslint/strict-boolean-expressions': 'off',
+      '@typescript-eslint/no-magic-numbers': 'off',
+    },
+    settings: {
+      "import/resolver": {
+        alias: {
+          map: [
+            ["@", "./src"],
+            ["@assets", "./src/assets"],
+            ["@utils", "./src/utils"],
+          ],
+        },
+      },
+    },
+  },
   {
     ignores: [
       "node_modules/**",
@@ -18,6 +41,7 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "./app/layout.tsx"
     ],
   },
 ];
