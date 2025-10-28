@@ -1,10 +1,18 @@
 /* eslint-disable func-style */
-import type { NextRequest } from 'next/server';
-import { getAllData } from '@/api/financialModelingPrep/getAllData';
 
-export async function GET(request: NextRequest): Promise<Response> {
+import { NextResponse } from 'next/server';
+import getAllData from '@/api/financialModelingPrep/getAllData';
+
+export async function GET(): Promise<Response> {
   try {
     const symbols = ['AAPL', 'MSFT'];
+
+    if (symbols.length === 0) {
+      return NextResponse.json(
+        { error: 'No symbols provided' },
+        { status: 400 },
+      );
+    }
 
     const allStocksDataPromise = symbols.map(async (symbol) => getAllData(symbol));
 
@@ -14,12 +22,18 @@ export async function GET(request: NextRequest): Promise<Response> {
 
     const results = await Promise.all(allStocksDataPromise);
 
-    if (!results) {
+    if (!results.length) {
       throw new Error('No results returned from stock data fetch');
     }
 
     return Response.json({ results });
   } catch (error) {
-    return Response.json({ error: 'Failed to fetch data' }, { status: 500 });
+    return NextResponse.json(
+      {
+        error,
+        success: false,
+      },
+      { status: 500 },
+    );
   }
 }

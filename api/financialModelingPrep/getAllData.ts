@@ -1,9 +1,11 @@
 // This will fetch company data based on the provided stock symbol
 // it will use two endpoints from Financial Modeling Prep API
 
-import { getSingleData } from './getSingleData';
+import getSingleData from './getSingleData';
+import resolveAllFinancials from './resolvers/resolveAllFinancials';
+import resolveFinancialMerging from './resolvers/resolveFinancialMerging';
 
-export const getAllData = async (symbol: string) => {
+const getAllData = async (symbol: string): Promise<unknown> => {
   const [fetchedCFStatement, fetchedIncomeStatement] = await Promise.all([
     getSingleData(symbol, 'cash-flow-statement'),
     getSingleData(symbol, 'income-statement'),
@@ -17,10 +19,17 @@ export const getAllData = async (symbol: string) => {
     throw new Error('Failed to Income Statement data');
   }
 
-  // TODO RESOLVER
+  const resolvedCompanyData = resolveAllFinancials(
+    fetchedCFStatement,
+    fetchedIncomeStatement,
+  );
+
+  const resolveData = resolveFinancialMerging(resolvedCompanyData);
 
   return {
-    cashFlowStatement: fetchedCFStatement,
-    incomeStatement: fetchedIncomeStatement,
+    data: resolveData,
+    symbol,
   };
 };
+
+export default getAllData;
