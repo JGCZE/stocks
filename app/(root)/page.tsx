@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 
 const App = (): ReactElement => (
-  <div>hello </div>
+  <div>Home Page </div>
 );
 
 export default App;
