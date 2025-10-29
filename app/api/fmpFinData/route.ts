@@ -1,17 +1,20 @@
 /* eslint-disable func-style */
 
-import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import getAllData from '@/api/financialModelingPrep/getAllData';
 
-export async function GET(): Promise<Response> {
-  try {
-    const symbols = ['AAPL', 'MSFT'];
+const symbols = ['AAPL', 'MSFT'];
 
+export async function GET(request: NextRequest): Promise<Response> {
+  try {
     if (symbols.length === 0) {
-      return NextResponse.json(
-        { error: 'No symbols provided' },
-        { status: 400 },
-      );
+      throw new Error('No stock symbols provided');
+    }
+
+    const apikey = request.nextUrl.searchParams.get('apikey');
+
+    if (!apikey || apikey !== process.env.FMP_API_KEY) {
+      return Response.json({ error: 'Invalid or missing API key' }, { status: 401 });
     }
 
     const allStocksDataPromise = symbols.map(async (symbol) => getAllData(symbol));
@@ -28,12 +31,6 @@ export async function GET(): Promise<Response> {
 
     return Response.json({ results });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error,
-        success: false,
-      },
-      { status: 500 },
-    );
+    return Response.json({ error }, { status: 500 });
   }
 }
