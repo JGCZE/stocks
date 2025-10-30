@@ -21,6 +21,7 @@ const eslintConfig = [
       "import/prefer-default-export": 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/no-magic-numbers': 'off',
+      'local-rules/function-parenthesis-newline': 'off',
     },
     settings: {
       "import/resolver": {
