@@ -1,5 +1,11 @@
-import type { ReactElement } from 'react';
+import batchOfSymbol1 from '../../../lib/partial/batchOfSymbol_1' with { type: 'json' };
 
-const Admin = (): ReactElement => <div>Admin</div>;
+const fetchingParts = [
+  { id: 1, part: 1, symbols: batchOfSymbol1 },
+];
+
+const Admin = async () => <div>
+  
+</div>;
 
 export default Admin;

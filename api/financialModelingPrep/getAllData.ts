@@ -6,7 +6,7 @@ import getSingleData from './getSingleData';
 import resolveAllFinancials from './resolvers/resolveAllFinancials';
 import resolveFinancialMerging from './resolvers/resolveFinancialMerging';
 
-const getAllData = async (symbol: string): Promise<TFincialData> => {
+export const getAllData = async (symbol: string): Promise<TFincialData> => {
   const [fetchedCFStatement, fetchedIncomeStatement] = await Promise.all([
     getSingleData(symbol, 'cash-flow-statement'),
     getSingleData(symbol, 'income-statement'),
@@ -37,4 +37,10 @@ const getAllData = async (symbol: string): Promise<TFincialData> => {
   };
 };
 
-export default getAllData;
+const getAllStocksData = async (symbols: Array<string>): Promise<Array<TFincialData>> => {
+  const promises = symbols.map(async (symbol) => getAllData(symbol));
+
+  return Promise.all(promises);
+};
+
+export default getAllStocksData;

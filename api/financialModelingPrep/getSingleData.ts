@@ -1,17 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 const BASE_ENDPOINT = process.env.FMP_ENDPOINT;
 const API_KEY = process.env.FMP_API_KEY;
 
-interface IAPIError {
-  error: string;
-  status: number;
-}
+type TResponseData = Array<{ [key: string]: number | string }>;
 
 type TStatementType = 'cash-flow-statement' | 'income-statement';
 
 const getSingleData = async (
   symbol: string,
   statement: TStatementType,
-): Promise<Array<unknown> | undefined> => { // TODO TYPE
+): Promise<TResponseData | undefined> => { // TODO TYPE
   if (!BASE_ENDPOINT || !API_KEY) {
     throw new Error('API endpoint or API key is not defined in environment variables');
   }
@@ -35,9 +33,9 @@ const getSingleData = async (
       throw new Error(`API request failed for ${url}. Status: ${response.status}. Body: ${errorBody}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as unknown;
 
-    if (!Array.isArray(data)) {
+    if (!data || !Array.isArray(data)) {
       console.error('Invalid API response format');
 
       return undefined;

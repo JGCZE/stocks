@@ -1,7 +1,7 @@
 /* eslint-disable func-style */
 
 import type { NextRequest } from 'next/server';
-import getAllData from '@/api/financialModelingPrep/getAllData';
+import { getAllData } from '@/api/financialModelingPrep/getAllData';
 
 const symbols = ['AAPL', 'MSFT'];
 
