@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+'use server';
 const BASE_ENDPOINT = process.env.FMP_ENDPOINT;
 const API_KEY = process.env.FMP_API_KEY;
 

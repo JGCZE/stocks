@@ -1,5 +1,6 @@
 // This will fetch company data based on the provided stock symbol
 // it will use two endpoints from Financial Modeling Prep API
+'use server';
 
 import type { TFincialData } from '@/lib/customTypes';
 import getSingleData from './getSingleData';
