@@ -22,6 +22,7 @@ const eslintConfig = [
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/no-magic-numbers': 'off',
       'local-rules/function-parenthesis-newline': 'off',
+      '@stylistic/jsx-one-expression-per-line': 'off',
     },
     settings: {
       "import/resolver": {

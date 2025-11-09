@@ -1,31 +1,18 @@
-import FetchingSection from '@/components/pages/Admin/FetchingSection';
-import { batchOfSymbol1 } from '@/lib/partial/batchOfSymbol_1';
-import { mockedSymbols } from '@/lib/partial/mockedSymbols';
+'use server';
+import { FetchFinancialsDataSection, FetchOverviewSection } from '@/components/pages/Admin';
 
-type TFetchingSymbols = Array<{
-  id: number;
-  part: number;
-  symbols: Array<string>;
-}>;
+const Admin = async () => {
+  const numForLoop = 50;
 
-const fetchingParts: TFetchingSymbols = [
-  { id: 0, part: 0, symbols: mockedSymbols },
-  { id: 1, part: 1, symbols: batchOfSymbol1 },
-];
+  return (
+    <div className="">
+      <h3 className="my-6">Admin panel - fetching section</h3>
 
-const Admin = async () => (
-  <>
-    <div>Admin Page - Financial Data Fetching</div>
+      <FetchOverviewSection />
 
-    <div>
-      {fetchingParts.map((data) => (
-        <FetchingSection
-          key={data.id}
-          data={data}
-        />
-      ))}
+      <FetchFinancialsDataSection />
     </div>
-  </>
-);
+  );
+};
 
 export default Admin;
