@@ -1,12 +1,12 @@
-'use server';
-import { symbol } from 'zod';
-import Actions from './Actions';
+'use client';
+import { getPages } from '@/api/AlphaVantage/getPages';
+import { Button } from '@/components/ui/button';
 
 interface IProps {
   readonly data: Array<string>;
 }
 
-const FetchingCard = async ({ data }: IProps) => {
+const FetchingCard = ({ data }: IProps) => {
   const symbols = data;
 
   return (
@@ -27,7 +27,12 @@ const FetchingCard = async ({ data }: IProps) => {
         <p>Poslední fetch: 20.10.2025</p>
       </div>
 
-      <Actions symbols={symbols} />
+      <Button
+        className="w-1/2 bg-green-400 cursor-pointer"
+        onClick={() => getPages(symbols)}
+      >
+        Fetch
+      </Button>
     </div>
   );
 };
