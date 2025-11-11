@@ -1,20 +1,32 @@
 'use server';
 
-import { getPage } from "./getPage";
+import type { TCompanyOverview } from '@/lib/mock/mockAAPL';
+import { getPage } from './getPage';
 
-export const getPages = async (symbols: Array<string>): Promise<void> => {
+export const getPages = async (
+  symbols: Array<string>,
+  dataType: string,
+): Promise<Array<TCompanyOverview> | undefined> => {
   try {
     if (!symbols.length || !Array.isArray(symbols)) {
       throw new Error('No symbols provided');
     }
 
-    const promises = symbols.map(async (symbol) => {
-      getPage(symbol);
-    });
+    if (!dataType) {
+      throw new Error('Data type is required');
+    }
 
-    const response = await Promise.all([]);
+    const promises = symbols.map((symbol) => getPage(symbol, dataType));
 
+    const response = await Promise.all(promises);
 
+    console.log('>>> getPages response:', response);
+
+    if (!response.length) {
+      throw new Error('Failed to fetch pages');
+    }
+
+    return response;
   } catch (error) {
     console.error('Error fetching pages:', error);
 

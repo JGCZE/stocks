@@ -1,12 +1,13 @@
 'use client';
-import { getPages } from '@/api/AlphaVantage/getPages';
+import type { ReactElement } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface IProps {
   readonly data: Array<string>;
+  readonly getData: () => Promise<void>;
 }
 
-const FetchingCard = ({ data }: IProps) => {
+const FetchingCard = ({ data, getData }: IProps): ReactElement => {
   const symbols = data;
 
   return (
@@ -29,7 +30,7 @@ const FetchingCard = ({ data }: IProps) => {
 
       <Button
         className="w-1/2 bg-green-400 cursor-pointer"
-        onClick={() => getPages(symbols)}
+        onClick={() => getData()}
       >
         Fetch
       </Button>

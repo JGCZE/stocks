@@ -1,6 +1,11 @@
 'use server';
 
-export const getPage = async (symbol: string, dataType: string) => {
+import type { TCompanyOverview } from '@/lib/mock/mockAAPL';
+
+export const getPage = async (
+  symbol: string,
+  dataType: string,
+): Promise<TCompanyOverview | undefined> => {
   try {
     const ENDPOINT = process.env.AV_ENDPOINT;
     const APIKEY = process.env.AV_API_KEY;
@@ -21,7 +26,8 @@ export const getPage = async (symbol: string, dataType: string) => {
       throw new Error(`API request failed for ${symbol}. Status: ${response.status}`);
     }
 
-    const data = await response.json() as unknown;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    const data = await response.json() as TCompanyOverview;
 
     return data;
   } catch (error) {
